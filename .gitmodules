@@ -1,6 +1,6 @@
-[submodule "dependencies/agora-el"]
-	path = dependencies/agora-el
-	url = https://github.com/bosagora/agora-el.git
 [submodule "dependencies/agora-cl"]
 	path = dependencies/agora-cl
-	url = https://github.com/bosagora/agora-cl.git
+	url = https://github.com/bosagora/agora-cl/
+[submodule "dependencies/agora-el"]
+	path = dependencies/agora-el
+	url = https://github.com/bosagora/agora-el/

@@ -1,0 +1,42 @@
+name: docker-agora
+
+on:
+  push:
+    branches: [ 'debug' ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-20.04
+    env:
+      HAVE_DOCKERHUB_SECRET: ${{ secrets.DHUB_TOKEN != '' && secrets.DHUB_USER != '' }}
+
+    steps:
+    - name: Install packages
+      run: sudo apt-get update && sudo apt-get install -y cmake git libssl-dev libgmp-dev libtinfo5 libprotobuf-dev
+
+    - name: Login to DockerHub
+      uses: docker/login-action@master
+      id: login
+      # If the user set up those variable, it's upstream or (s)he wants the push to happen
+      # Otherwise, it might just be someone pushing to their fork, in which case we still
+      # want to build as it's useful to test a release before upstreaming it.
+      if: env.HAVE_DOCKERHUB_SECRET
+      with:
+        username: ${{ secrets.DHUB_USER }}
+        password: ${{ secrets.DHUB_TOKEN }}
+
+    - uses: actions/checkout@main
+
+    - name: Build and push beacon-chain
+      run: bazel run //cmd/beacon-chain:push_images_debug --config=release
+
+    - name: Build and push validator
+      run: bazel run //cmd/validator:push_images_debug --config=release
+
+    - name: Build and push bootnode
+      run: bazel run //tools/bootnode:push_images_debug --config=release
+
+    - name: Build and push ctl
+      run: bazel run //cmd/prysmctl:push_images_debug --config=release
