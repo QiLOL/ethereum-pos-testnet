@@ -19,7 +19,7 @@ fi
 NETWORK_DIR=./network
 
 # Change this number for your desired number of nodes
-NUM_NODES=2
+NUM_NODES=4
 
 # Port information. All ports will be incremented upon
 # with more validators to prevent port conflicts on a single machine
@@ -62,12 +62,12 @@ pkill bootnode || echo "No existing bootnode processes"
 
 # Set Paths for your binaries. Configure as you wish, particularly
 # if you're developing on a local fork of geth/prysm
-GETH_BINARY=./dependencies/go-ethereum/build/bin/geth
-GETH_BOOTNODE_BINARY=./dependencies/go-ethereum/build/bin/bootnode
+GETH_BINARY=./dependencies/agora-el/build/bin/geth
+GETH_BOOTNODE_BINARY=./dependencies/agora-el/build/bin/bootnode
 
-PRYSM_CTL_BINARY=./dependencies/prysm/bazel-bin/cmd/prysmctl/prysmctl_/prysmctl
-PRYSM_BEACON_BINARY=./dependencies/prysm/bazel-bin/cmd/beacon-chain/beacon-chain_/beacon-chain
-PRYSM_VALIDATOR_BINARY=./dependencies/prysm/bazel-bin/cmd/validator/validator_/validator
+PRYSM_CTL_BINARY=./dependencies/agora-cl/bazel-bin/cmd/prysmctl/prysmctl_/prysmctl
+PRYSM_BEACON_BINARY=./dependencies/agora-cl/bazel-bin/cmd/beacon-chain/beacon-chain_/beacon-chain
+PRYSM_VALIDATOR_BINARY=./dependencies/agora-cl/bazel-bin/cmd/validator/validator_/validator
 
 # Create the bootnode for execution client peer discovery. 
 # Not a production grade bootnode. Does not do peer discovery for consensus client
@@ -95,7 +95,7 @@ fi
 # Generate the genesis. This will generate validators based
 # on https://github.com/ethereum/eth2.0-pm/blob/a085c9870f3956d6228ed2a40cd37f0c6580ecd7/interop/mocked_start/README.md
 $PRYSM_CTL_BINARY testnet generate-genesis \
---fork=deneb \
+--fork=capella \
 --num-validators=$NUM_NODES \
 --chain-config-file=./config.yml \
 --geth-genesis-json-in=./genesis.json \
