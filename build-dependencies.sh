@@ -28,8 +28,8 @@ if [[ $(echo "$MIN_GO_VERSION $GO_VERSION" | tr " " "\n" | sort -V | head -n 1) 
 fi
 
 
-PRYSM_DIR=./dependencies/prysm
-GETH_DIR=./dependencies/go-ethereum
+PRYSM_DIR=./dependencies/agora-cl
+GETH_DIR=./dependencies/agora-el
 
 ( cd $PRYSM_DIR && bazel build //cmd/beacon-chain:beacon-chain && bazel build //cmd/validator:validator && bazel build //cmd/prysmctl:prysmctl )
 
