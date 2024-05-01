@@ -1,6 +1,6 @@
 [submodule "dependencies/agora-el"]
-	path = dependencies/go-ethereum
+	path = dependencies/agora-el
 	url = https://github.com/bosagora/agora-el.git
 [submodule "dependencies/agora-cl"]
-	path = dependencies/prysm
+	path = dependencies/agora-cl
 	url = https://github.com/bosagora/agora-cl.git
