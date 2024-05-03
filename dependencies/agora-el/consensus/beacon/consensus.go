@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/consensus"
 	"github.com/ethereum/go-ethereum/consensus/misc"
@@ -342,10 +343,12 @@ func (beacon *Beacon) Finalize(chain consensus.ChainHeaderReader, header *types.
 		beacon.ethone.Finalize(chain, header, state, txs, uncles, nil)
 		return
 	}
-
+	log.Info("Finalize ******", "headnum", header.Number, "suppose", chain.Config().BosagoraBlock)
 	if chain.Config().IsBosagora(header.Number) {
+		log.Info("Finalize I am here ******", "header", header.Number, "last", chain.Config().Bosagora.LastCommonsBudgetRewardBlock)
 		if header.Number.Cmp(&chain.Config().Bosagora.LastCommonsBudgetRewardBlock) < 0 {
 			state.AddBalance(chain.Config().Bosagora.CommonsBudget, &chain.Config().Bosagora.CommonsBudgetReward)
+			log.Info("Finalize I am here2 ******", "header", header.Number)
 		}
 	}
 

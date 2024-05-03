@@ -248,7 +248,7 @@ var (
 		TerminalTotalDifficultyPassed: false,
 		Ethash:                        new(EthashConfig),
 		Clique:                        nil,
-		BosagoraBlock:                 nil,
+		BosagoraBlock:                 big.NewInt(1),
 		Bosagora:                      &BosagoraConfig{common.Address{}, *common.Big0, *common.Big0},
 	}
 
@@ -279,7 +279,7 @@ var (
 		TerminalTotalDifficultyPassed: false,
 		Ethash:                        nil,
 		Clique:                        &CliqueConfig{Period: 0, Epoch: 30000},
-		BosagoraBlock:                 nil,
+		BosagoraBlock:                 big.NewInt(2),
 		Bosagora:                      &BosagoraConfig{common.Address{}, *common.Big0, *common.Big0},
 	}
 
@@ -310,7 +310,7 @@ var (
 		TerminalTotalDifficultyPassed: false,
 		Ethash:                        new(EthashConfig),
 		Clique:                        nil,
-		BosagoraBlock:                 nil,
+		BosagoraBlock:                 big.NewInt(3),
 		Bosagora:                      &BosagoraConfig{common.Address{}, *common.Big0, *common.Big0},
 	}
 
@@ -341,7 +341,7 @@ var (
 		TerminalTotalDifficultyPassed: false,
 		Ethash:                        new(EthashConfig),
 		Clique:                        nil,
-		BosagoraBlock:                 nil,
+		BosagoraBlock:                 big.NewInt(4),
 		Bosagora:                      &BosagoraConfig{common.Address{}, *common.Big0, *common.Big0},
 	}
 	TestRules = TestChainConfig.Rules(new(big.Int), false, 0)
@@ -653,6 +653,7 @@ func (c *ChainConfig) IsGrayGlacier(num *big.Int) bool {
 // IsBosagora returns whether num is either equal to the Bosagora changes are activated.
 func (c *ChainConfig) IsBosagora(num *big.Int) bool {
 	return isBlockForked(c.BosagoraBlock, num)
+	//return isBlockForked(big.NewInt(0), num)
 }
 
 // IsTerminalPoWBlock returns whether the given block is the last block of PoW stage.

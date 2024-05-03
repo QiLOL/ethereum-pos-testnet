@@ -102,6 +102,8 @@ $PRYSM_CTL_BINARY testnet generate-genesis \
 --output-ssz=$NETWORK_DIR/genesis.ssz \
 --geth-genesis-json-out=$NETWORK_DIR/genesis.json
 
+python3 add-bosagora.py
+
 
 # The prysm bootstrap node is set after the first loop, as the first
 # node is the bootstrap node. This is used for consensus client discovery
@@ -111,13 +113,17 @@ PRYSM_BOOTSTRAP_NODE=
 MIN_SYNC_PEERS=$((NUM_NODES/2))
 echo $MIN_SYNC_PEERS is minimum number of synced peers required
 
+
+MINER_LIST=(0x123463a4b065722e99115d6c222f267d9cabb524 0xdF18f7A5880291b50B0d9d3a0feC1e0d2BFf1B74 0xd921B4F2251cF8d08aa4A00892839C0a365E3cd4 0x3cB007d10f3980092E2c9f2b0038050c84d4C1c3)
+
 # Create the validators in a loop
 for (( i=0; i<$NUM_NODES; i++ )); do
     NODE_DIR=$NETWORK_DIR/node-$i
     mkdir -p $NODE_DIR/execution
     mkdir -p $NODE_DIR/consensus
     mkdir -p $NODE_DIR/logs
-
+    echo "TTTTTTTTTTTTTTTTTTTTTTTTTTT------"
+    echo ${MINER_LIST[i]}
     # We use an empty password. Do not do this in production
     geth_pw_file="$NODE_DIR/geth_password.txt"
     echo "" > "$geth_pw_file"
@@ -138,7 +144,7 @@ for (( i=0; i<$NUM_NODES; i++ )); do
 
     # Start geth execution client for this node
     $GETH_BINARY \
-      --networkid=${CHAIN_ID:-32382} \
+      --networkid=${CHAIN_ID:-2151} \
       --http \
       --http.api=eth,net,web3 \
       --http.addr=127.0.0.1 \
@@ -174,7 +180,7 @@ for (( i=0; i<$NUM_NODES; i++ )); do
       --interop-eth1data-votes \
       --chain-config-file=$NODE_DIR/consensus/config.yml \
       --contract-deployment-block=0 \
-      --chain-id=${CHAIN_ID:-32382} \
+      --chain-id=${CHAIN_ID:-2151} \
       --rpc-host=127.0.0.1 \
       --rpc-port=$((PRYSM_BEACON_RPC_PORT + i)) \
       --grpc-gateway-host=127.0.0.1 \
@@ -182,7 +188,7 @@ for (( i=0; i<$NUM_NODES; i++ )); do
       --execution-endpoint=http://localhost:$((GETH_AUTH_RPC_PORT + i)) \
       --accept-terms-of-use \
       --jwt-secret=$NODE_DIR/execution/jwtsecret \
-      --suggested-fee-recipient=0x123463a4b065722e99115d6c222f267d9cabb524 \
+      --suggested-fee-recipient=${MINER_LIST[i]} \
       --minimum-peers-per-subnet=0 \
       --p2p-tcp-port=$((PRYSM_BEACON_P2P_TCP_PORT + i)) \
       --p2p-udp-port=$((PRYSM_BEACON_P2P_UDP_PORT + i)) \
